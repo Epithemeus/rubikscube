@@ -1,0 +1,10 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+
+#two:
+#  username: MyString
+brandon:
+    username: Brandon
+    id: 1
+    password_digest: <%= User.digest('password') %>
+    accounts: []
