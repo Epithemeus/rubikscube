@@ -8,7 +8,7 @@
 	</head>
 	<p>HELLO</p>
 	<body>
-		<script src="app/javascripts/three.min.js"></script>
+		<script src="/assets/three.min.js"></script>
 		<script>
 			var scene = new THREE.Scene();
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
@@ -17,33 +17,112 @@
 			renderer.setSize( window.innerWidth/2, window.innerHeight/2 );
 			document.body.appendChild( renderer.domElement );
 
-			var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-			var cube = new THREE.Mesh( geometry, material );
-			scene.add( cube );
+			var geometrys = [];
+			var materials = [];
+			var cubes = [];
+			
+			for (i = 0; i < 27; i++)
+			{
+				geometrys[i] = new THREE.BoxGeometry( 0.95, 0.95, 0.95 );
+				materials[i] = new THREE.MeshBasicMaterial( { color: 0xffffff, vertexColors: THREE.FaceColors } );
+				
+			}
+			
+			for (i = 0; i < 27; i++)
+			{
+				for (j =0; j < 12; j++)
+				{
+					geometrys[i].faces[j].color.setHex(0x000000);
+				}
+			}
+			
+			//Front Face
+			for (i = 0; i < 9; i++)
+			{
+				geometrys[i].translate(0,0,1);
+				geometrys[i].faces[8].color.setHex(0x00ff00);
+				geometrys[i].faces[9].color.setHex(0x00ff00);
+			}
+			
+			//Back Face
+			for (i = 18; i < 27; i++)
+			{
+				geometrys[i].translate(0,0,-1);
+				geometrys[i].faces[10].color.setHex(0x0000FF);
+				geometrys[i].faces[11].color.setHex(0x0000FF);
+			}
+			
+			//Left Face
+			for(i = 0; i < 27; i += 3)
+			{
+				geometrys[i].translate(-1,0,0);
+				geometrys[i].faces[2].color.setHex(0xFFA500);
+				geometrys[i].faces[3].color.setHex(0xFFA500);
+			}
+			
+			//Right Face
+			for(i = 2; i < 27; i+= 3)
+			{
+				geometrys[i].translate(1,0,0);
+				geometrys[i].faces[0].color.setHex(0xFF0000);
+				geometrys[i].faces[1].color.setHex(0xFF0000);
+			}
+			
+			//Up Face
+			for(i =0; i < 21; i++)
+			{
+				if ( i == 3) 
+				{
+					i = 9;
+				}
+				if ( i == 12)
+				{
+					i = 18;
+				}
+				geometrys[i].translate(0,1,0);
+				geometrys[i].faces[4].color.setHex(0xFFFFFF);
+				geometrys[i].faces[5].color.setHex(0xFFFFFF);
+			}
+			
+			//Down Face
+			for(i =6; i < 27; i++)
+			{
+				if ( i == 9) 
+				{
+					i = 15;
+				}
+				if ( i == 18)
+				{
+					i = 24;
+				}
+				geometrys[i].translate(0,-1,0);
+				geometrys[i].faces[6].color.setHex(0xFFFF00);
+				geometrys[i].faces[7].color.setHex(0xFFFF00);
+			}
+			
+			for (i = 0; i < 27; i++)
+			{
+				cubes[i] = new THREE.Mesh( geometrys[i], materials[i] );
+				scene.add( cubes[i] );
+			}
+			
+			
 			var position = 0.0;
 			var direction = 0.01;
 
 			camera.position.z = 5;
+			
 
-			var render = function () {
+			var render = function () 
+			{
 				requestAnimationFrame( render );
-        
-        if (position < -5)
-        {
-          direction *= -1;
-        }
-        
-        if (position > 5)
-        {
-          direction *= -1;
-        }
-        position += direction;
-        
-        cube.position.x = position;
-        
-				cube.rotation.x += 0.01;
-				cube.rotation.y += 0.01;
+				
+				for(i =0; i < 27; i++)
+				{
+					cubes[i].rotation.x += 0.01;
+					cubes[i].rotation.y += 0.01;
+				}
+       	
 
 				renderer.render(scene, camera);
 			};
