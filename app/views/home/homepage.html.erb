@@ -128,7 +128,7 @@
 					{
 						cubes[i].rotation.z += 0.01
 					}
-					//Math.PI is too precise, so check a range around PI/2 or 90 degrees (1.570796)
+					//Math.PI is too precise for direct comparison, so check a range around PI/2 or 90 degrees (1.570796)
 					if (cubes[0].rotation.z >= 1.565 && cubes[0].rotation.z <= 1.575)
 					{
 						animating = false;
@@ -148,11 +148,15 @@
 			var animateStep = function()
 			{
 				animating = true;
-			}
+				var algorithmOutput = document.getElementById("algorithm").value;
+				document.getElementById("algorithmOutput").innerHTML = algorithmOutput;
+			}	
 
 			render();
 		</script>
 		<br></br>
+		<input type="text" id="algorithm">
 		<button onclick="animateStep()">Animate</button>
+		<p id="algorithmOutput"></p>
 	</body>
 </html>
