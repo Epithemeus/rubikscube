@@ -119,11 +119,12 @@
 			var downFace = [6,7,8,15,16,17,24,25,26];
 			
 			var frontRotatedCC = [2,5,8,1,4,7,0,3,6];
-			var backRotatedCC = [18,19,20,21,22,23,24,25,26];
-			var leftRotatedCC = [0,3,6,9,12,15,18,21,24];
-			var rightRotatedCC = [2,5,8,11,14,17,20,23,26];
-			var upRotatedCC = [0,1,2,9,10,11,18,19,20];
-			var downRotatedCC = [6,7,8,15,16,17,24,25,26];
+			var backRotatedCC = [24,21,18,25,22,19,26,23,20];
+			var leftRotatedCC = [6,15,24,3,12,21,0,9,18];
+			var rightRotatedCC = [20,11,2,23,14,5,26,17,8];
+			var upRotatedCC = [18,9,0,19,10,1,20,11,2];
+			var downRotatedCC = [8,17,26,7,16,25,6,15,24];
+			
 			var faceToRotate = frontFace;
 			var rotatedFace = frontRotatedCC;
 			var axisToRotateAround = 0;
@@ -143,7 +144,8 @@
 				if (animating)
 				{
 					
-					if(g_notation == "u" ){
+					if(g_notation == "u" )
+					{
 						for (i = 0; i < 9; i++)
 						{
 							cubes[faceToRotate[i]].rotation.y += 0.01
@@ -177,7 +179,8 @@
 							reassignCubes();
 						}
 					}
-					else if(g_notation == "d"){
+					else if(g_notation == "d")
+					{
 						for (i = 0; i < 9; i++)
 						{
 							cubes[faceToRotate[i]].rotation.y += 0.01
@@ -212,7 +215,8 @@
 						}
 					}
 					
-					else if(g_notation == "f" ){ //f and b for z
+					else if(g_notation == "f" )
+					{ //f and b for z
 						for (i = 0; i < 9; i++)
 						{
 							cubes[faceToRotate[i]].rotation.z += 0.01
@@ -246,7 +250,8 @@
 							reassignCubes();
 						}
 					}
-					else if(g_notation == "b"){
+					else if(g_notation == "b")
+					{
 						for (i = 0; i < 9; i++)
 						{
 							cubes[faceToRotate[i]].rotation.z += 0.01
@@ -280,7 +285,8 @@
 							reassignCubes();
 						}
 					}
-					else if(g_notation == "r"  ){ //r and l for x
+					else if(g_notation == "r"  )
+					{ //r and l for x
 						for (i = 0; i < 9; i++)
 						{
 							cubes[faceToRotate[i]].rotation.x += 0.01
@@ -314,8 +320,9 @@
 							reassignCubes();
 						}
 					}
-					else if(g_notation == "l"){
-								for (i = 0; i < 9; i++)
+					else if(g_notation == "l")
+					{
+						for (i = 0; i < 9; i++)
 						{
 							cubes[faceToRotate[i]].rotation.x += 0.01
 						}
