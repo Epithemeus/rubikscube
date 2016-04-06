@@ -127,7 +127,7 @@
 			
 			var faceToRotate = frontFace;
 			var rotatedFace = frontRotatedCC;
-			var upAxis = new THREE.Vector3(0,1,0);
+			var axisToRotate = 0;
 
 			camera.position.z = 5;
 			camera.position.y = 5;
@@ -154,27 +154,6 @@
 						if (cubes[faceToRotate[0]].rotation.y >= 1.565 && cubes[faceToRotate[0]].rotation.y <= 1.575)
 						{
 							cubes[faceToRotate[0]].rotation.y = Math.PI /2;
-							animating = false;
-							reassignCubes();
-						}
-						//implementing dirty checks to prevent over rotation and current wworks with U
-						else if (cubes[faceToRotate[0]].rotation.y >= 1.565 + Math.PI / 2 && cubes[faceToRotate[0]].rotation.y <= 1.575 + Math.PI/2){
-							cubes[faceToRotate[0]].rotation.y = Math.PI;
-							animating = false;
-							reassignCubes();
-						}
-						else if (cubes[faceToRotate[0]].rotation.y >= 1.565 + Math.PI  && cubes[faceToRotate[0]].rotation.y <= 1.575 + Math.PI){
-							cubes[faceToRotate[0]].rotation.y = Math.PI + (Math.PI/2);
-							animating = false;
-							reassignCubes();
-						}
-						else if (cubes[faceToRotate[0]].rotation.y >= Math.PI * 2)
-						{
-							for (i = 0; i < 9; i++)
-							{
-								cubes[faceToRotate[i]].rotation.y = 0;
-							
-							}
 							animating = false;
 							reassignCubes();
 						}
@@ -371,6 +350,14 @@
 				}
 				for (i = 0; i < 9; i++)
 				{
+					//if (axisToRotate == 0)
+					//{
+						
+					//}
+					//else if()
+					cubes[faceToRotate[i]].geometry.applyMatrix( cubes[faceToRotate[i]].matrix );
+					cubes[faceToRotate[i]].rotation.set( 0, 0, 0 );
+					cubes[faceToRotate[i]].updateMatrix();
 					cubes[faceToRotate[i]] = cubesReferences[i];
 				}
 			}
