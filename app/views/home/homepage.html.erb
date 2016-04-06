@@ -119,15 +119,15 @@
 			var downFace = [6,7,8,15,16,17,24,25,26];
 			
 			var frontRotatedCC = [2,5,8,1,4,7,0,3,6];
-			var backRotatedCC = [24,21,18,25,22,19,26,23,20];
-			var leftRotatedCC = [6,15,24,3,12,21,0,9,18];
+			var backRotatedCC = [20,23,26,19,22,25,18,21,24];
+			var leftRotatedCC = [18,9,0,21,12,3,24,15,6];
 			var rightRotatedCC = [20,11,2,23,14,5,26,17,8];
 			var upRotatedCC = [18,9,0,19,10,1,20,11,2];
-			var downRotatedCC = [8,17,26,7,16,25,6,15,24];
+			var downRotatedCC = [24,15,6,25,16,7,26,17,8];
 			
 			var faceToRotate = frontFace;
 			var rotatedFace = frontRotatedCC;
-			var axisToRotateAround = 0;
+			var upAxis = new THREE.Vector3(0,1,0);
 
 			camera.position.z = 5;
 			camera.position.y = 5;
@@ -358,7 +358,6 @@
 					
 					
 				}
-
 				renderer.render(scene, camera);
 			};
 			
