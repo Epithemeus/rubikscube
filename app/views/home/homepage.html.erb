@@ -143,199 +143,62 @@
 				// U and D rotates with cubes[faceToRotate[i]].rotation.y  // U stops first move
 				if (animating)
 				{
-					
-					if(g_notation == "u" )
+					if(axisToRotate == 0)
 					{
 						for (i = 0; i < 9; i++)
 						{
-							cubes[faceToRotate[i]].rotation.y += 0.01
+							cubes[faceToRotate[i]].rotation.x += 0.01
 						}
 						//Math.PI is too precise for direct comparison, so check a range around PI/2 or 90 degrees (1.570796)
-						if (cubes[faceToRotate[0]].rotation.y >= 1.565 && cubes[faceToRotate[0]].rotation.y <= 1.575)
-						{
-							cubes[faceToRotate[0]].rotation.y = Math.PI /2;
-							animating = false;
-							reassignCubes();
-						}
-					}
-					else if(g_notation == "d")
-					{
-						for (i = 0; i < 9; i++)
-						{
-							cubes[faceToRotate[i]].rotation.y += 0.01
-						}
-						//Math.PI is too precise for direct comparison, so check a range around PI/2 or 90 degrees (1.570796)
-						if (cubes[faceToRotate[0]].rotation.y >= 1.565 && cubes[faceToRotate[0]].rotation.y <= 1.575)
-						{
-							cubes[faceToRotate[0]].rotation.y = Math.PI /2;
-							animating = false;
-							reassignCubes();
-						}
-						//implementing dirty checks to prevent over rotation and current wworks with U
-						else if (cubes[faceToRotate[0]].rotation.y >= 1.565 + Math.PI / 2 && cubes[faceToRotate[0]].rotation.y <= 1.575 + Math.PI/2){
-							cubes[faceToRotate[0]].rotation.y = Math.PI;
-							animating = false;
-							reassignCubes();
-						}
-						else if (cubes[faceToRotate[0]].rotation.y >= 1.565 + Math.PI  && cubes[faceToRotate[0]].rotation.y <= 1.575 + Math.PI){
-							cubes[faceToRotate[0]].rotation.y = Math.PI + (Math.PI/2);
-							animating = false;
-							reassignCubes();
-						}
-						else if (cubes[faceToRotate[0]].rotation.y >= Math.PI * 2)
+						if (cubes[faceToRotate[0]].rotation.x >= 1.565 && cubes[faceToRotate[0]].rotation.y <= 1.575)
 						{
 							for (i = 0; i < 9; i++)
 							{
-								cubes[faceToRotate[i]].rotation.y = 0;
-							
+								cubes[faceToRotate[i]].rotation.x = Math.PI/2;
 							}
 							animating = false;
 							reassignCubes();
 						}
 					}
-					
-					else if(g_notation == "f" )
+					else if(axisToRotate == 1)
+					{
+						for (i = 0; i < 9; i++)
+						{
+							cubes[faceToRotate[i]].rotation.y += 0.01
+						}
+						//Math.PI is too precise for direct comparison, so check a range around PI/2 or 90 degrees (1.570796)
+						if (cubes[faceToRotate[0]].rotation.y >= 1.565 && cubes[faceToRotate[0]].rotation.y <= 1.575)
+						{
+							for (i = 0; i < 9; i++)
+							{
+								cubes[faceToRotate[i]].rotation.y = Math.PI/2;
+							}
+							animating = false;
+							reassignCubes();
+						}
+					}
+					else if(axisToRotate == 2)
 					{ //f and b for z
 						for (i = 0; i < 9; i++)
 						{
 							cubes[faceToRotate[i]].rotation.z += 0.01
 						}
 						//Math.PI is too precise for direct comparison, so check a range around PI/2 or 90 degrees (1.570796)
-						if (cubes[faceToRotate[0]].rotation.z >= 1.565 && cubes[faceToRotate[0]].rotation.z <= 1.575)
-						{
-							cubes[faceToRotate[0]].rotation.z = Math.PI /2;
-							animating = false;
-							reassignCubes();
-						}
-						//implementing dirty checks to prevent over rotation and current wworks with U
-						else if (cubes[faceToRotate[0]].rotation.z >= 1.565 + Math.PI / 2 && cubes[faceToRotate[0]].rotation.z <= 1.575 + Math.PI/2){
-							cubes[faceToRotate[0]].rotation.z = Math.PI;
-							animating = false;
-							reassignCubes();
-						}
-						else if (cubes[faceToRotate[0]].rotation.z >= 1.565 + Math.PI  && cubes[faceToRotate[0]].rotation.z <= 1.575 + Math.PI){
-							cubes[faceToRotate[0]].rotation.z = Math.PI + (Math.PI/2);
-							animating = false;
-							reassignCubes();
-						}
-						else if (cubes[faceToRotate[0]].rotation.z >= Math.PI * 2)
+						if (cubes[faceToRotate[0]].rotation.z >= 1.565 && cubes[faceToRotate[0]].rotation.y <= 1.575)
 						{
 							for (i = 0; i < 9; i++)
 							{
-								cubes[faceToRotate[i]].rotation.z = 0;
-							
+								cubes[faceToRotate[i]].rotation.z = Math.PI/2;
 							}
 							animating = false;
 							reassignCubes();
 						}
 					}
-					else if(g_notation == "b")
+					//If it hits here, something is wrong, so just stop animating!
+					else
 					{
-						for (i = 0; i < 9; i++)
-						{
-							cubes[faceToRotate[i]].rotation.z += 0.01
-						}
-						//Math.PI is too precise for direct comparison, so check a range around PI/2 or 90 degrees (1.570796)
-						if (cubes[faceToRotate[0]].rotation.z >= 1.565 && cubes[faceToRotate[0]].rotation.z <= 1.575)
-						{
-							cubes[faceToRotate[0]].rotation.z = Math.PI /2;
-							animating = false;
-							reassignCubes();
-						}
-						//implementing dirty checks to prevent over rotation and current wworks with U
-						else if (cubes[faceToRotate[0]].rotation.z >= 1.565 + Math.PI / 2 && cubes[faceToRotate[0]].rotation.z <= 1.575 + Math.PI/2){
-							cubes[faceToRotate[0]].rotation.z = Math.PI;
-							animating = false;
-							reassignCubes();
-						}
-						else if (cubes[faceToRotate[0]].rotation.z >= 1.565 + Math.PI  && cubes[faceToRotate[0]].rotation.z <= 1.575 + Math.PI){
-							cubes[faceToRotate[0]].rotation.z = Math.PI + (Math.PI/2);
-							animating = false;
-							reassignCubes();
-						}
-						else if (cubes[faceToRotate[0]].rotation.z >= Math.PI * 2)
-						{
-							for (i = 0; i < 9; i++)
-							{
-								cubes[faceToRotate[i]].rotation.z = 0;
-							
-							}
-							animating = false;
-							reassignCubes();
-						}
+						animating = false;
 					}
-					else if(g_notation == "r"  )
-					{ //r and l for x
-						for (i = 0; i < 9; i++)
-						{
-							cubes[faceToRotate[i]].rotation.x += 0.01
-						}
-						//Math.PI is too precise for direct comparison, so check a range around PI/2 or 90 degrees (1.570796)
-						if (cubes[faceToRotate[0]].rotation.x >= 1.565 && cubes[faceToRotate[0]].rotation.x <= 1.575)
-						{
-							cubes[faceToRotate[0]].rotation.x = Math.PI /2;
-							animating = false;
-							reassignCubes();
-						}
-						//implementing dirty checks to prevent over rotation and current wworks with U
-						else if (cubes[faceToRotate[0]].rotation.x >= 1.565 + Math.PI / 2 && cubes[faceToRotate[0]].rotation.x <= 1.575 + Math.PI/2){
-							cubes[faceToRotate[0]].rotation.x = Math.PI;
-							animating = false;
-							reassignCubes();
-						}
-						else if (cubes[faceToRotate[0]].rotation.x >= 1.565 + Math.PI  && cubes[faceToRotate[0]].rotation.x <= 1.575 + Math.PI){
-							cubes[faceToRotate[0]].rotation.x = Math.PI + (Math.PI/2);
-							animating = false;
-							reassignCubes();
-						}
-						else if (cubes[faceToRotate[0]].rotation.x >= Math.PI * 2)
-						{
-							for (i = 0; i < 9; i++)
-							{
-								cubes[faceToRotate[i]].rotation.x = 0;
-							
-							}
-							animating = false;
-							reassignCubes();
-						}
-					}
-					else if(g_notation == "l")
-					{
-						for (i = 0; i < 9; i++)
-						{
-							cubes[faceToRotate[i]].rotation.x += 0.01
-						}
-						//Math.PI is too precise for direct comparison, so check a range around PI/2 or 90 degrees (1.570796)
-						if (cubes[faceToRotate[0]].rotation.x >= 1.565 && cubes[faceToRotate[0]].rotation.x <= 1.575)
-						{
-							cubes[faceToRotate[0]].rotation.x = Math.PI /2;
-							animating = false;
-							reassignCubes();
-						}
-						//implementing dirty checks to prevent over rotation and current wworks with U
-						else if (cubes[faceToRotate[0]].rotation.x >= 1.565 + Math.PI / 2 && cubes[faceToRotate[0]].rotation.x <= 1.575 + Math.PI/2){
-							cubes[faceToRotate[0]].rotation.x = Math.PI;
-							animating = false;
-							reassignCubes();
-						}
-						else if (cubes[faceToRotate[0]].rotation.x >= 1.565 + Math.PI  && cubes[faceToRotate[0]].rotation.x <= 1.575 + Math.PI){
-							cubes[faceToRotate[0]].rotation.x = Math.PI + (Math.PI/2);
-							animating = false;
-							reassignCubes();
-						}
-						else if (cubes[faceToRotate[0]].rotation.x >= Math.PI * 2)
-						{
-							for (i = 0; i < 9; i++)
-							{
-								cubes[faceToRotate[i]].rotation.x = 0;
-							
-							}
-							animating = false;
-							reassignCubes();
-						}
-					}
-					
-					
 				}
 				renderer.render(scene, camera);
 			};
@@ -350,11 +213,6 @@
 				}
 				for (i = 0; i < 9; i++)
 				{
-					//if (axisToRotate == 0)
-					//{
-						
-					//}
-					//else if()
 					cubes[faceToRotate[i]].geometry.applyMatrix( cubes[faceToRotate[i]].matrix );
 					cubes[faceToRotate[i]].rotation.set( 0, 0, 0 );
 					cubes[faceToRotate[i]].updateMatrix();
@@ -372,31 +230,37 @@
 					{
 						case "R":
 							faceToRotate = rightFace;
+							axisToRotate = 0;
 							rotatedFace = rightRotatedCC;
 							g_notation = "r";
 							break;
 						case "L":
 							faceToRotate = leftFace;
+							axisToRotate = 0;
 							rotatedFace = leftRotatedCC;
 							g_notation = "l";
 							break;
 						case "U":
 							faceToRotate = upFace;
+							axisToRotate = 1;
 							rotatedFace = upRotatedCC;
 							g_notation = "u";
 							break;
 						case "D":
 							faceToRotate = downFace;
+							axisToRotate = 1;
 							rotatedFace = downRotatedCC;
 							g_notation = "d";
 							break;
 						case "F":
 							faceToRotate = frontFace;
+							axisToRotate = 2;
 							rotatedFace = frontRotatedCC;
 							g_notation = "f";
 							break;
 						case "B":
 							faceToRotate = backFace;
+							axisToRotate = 2;
 							rotatedFace = backRotatedCC;
 							g_notation = "b";
 							break;
