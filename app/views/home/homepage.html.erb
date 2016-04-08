@@ -158,14 +158,14 @@
 					{
 						for (i = 0; i < 9; i++)
 						{
-							cubes[faceToRotate[i]].rotation.x += 0.01
+							cubes[faceToRotate[i]].rotation.x += direction * 0.01;
 						}
 						//Math.PI is too precise for direct comparison, so check a range around PI/2 or 90 degrees (1.570796)
-						if (cubes[faceToRotate[0]].rotation.x >= 1.565 && cubes[faceToRotate[0]].rotation.y <= 1.575)
+						if (cubes[faceToRotate[0]].rotation.x >= 1.565 || cubes[faceToRotate[0]].rotation.x <= -1.565)
 						{
 							for (i = 0; i < 9; i++)
 							{
-								cubes[faceToRotate[i]].geometry.applyMatrix( new THREE.Matrix4().makeRotationX(Math.PI/2));
+								cubes[faceToRotate[i]].geometry.applyMatrix( new THREE.Matrix4().makeRotationX(direction * Math.PI/2));
 							}
 							animating = false;
 							reassignCubes();
@@ -175,14 +175,14 @@
 					{
 						for (i = 0; i < 9; i++)
 						{
-							cubes[faceToRotate[i]].rotation.y += 0.01
+							cubes[faceToRotate[i]].rotation.y += direction * 0.01;
 						}
 						//Math.PI is too precise for direct comparison, so check a range around PI/2 or 90 degrees (1.570796)
-						if (cubes[faceToRotate[0]].rotation.y >= 1.565 && cubes[faceToRotate[0]].rotation.y <= 1.575)
+						if (cubes[faceToRotate[0]].rotation.y >= 1.565 || cubes[faceToRotate[0]].rotation.y <= -1.565)
 						{
 							for (i = 0; i < 9; i++)
 							{
-								cubes[faceToRotate[i]].geometry.applyMatrix( new THREE.Matrix4().makeRotationY(Math.PI/2));
+								cubes[faceToRotate[i]].geometry.applyMatrix( new THREE.Matrix4().makeRotationY(direction * Math.PI/2));
 							}
 							animating = false;
 							reassignCubes();
@@ -192,14 +192,14 @@
 					{ //f and b for z
 						for (i = 0; i < 9; i++)
 						{
-							cubes[faceToRotate[i]].rotation.z += 0.01
+							cubes[faceToRotate[i]].rotation.z += direction * 0.01;
 						}
 						//Math.PI is too precise for direct comparison, so check a range around PI/2 or 90 degrees (1.570796)
-						if (cubes[faceToRotate[0]].rotation.z >= 1.565 && cubes[faceToRotate[0]].rotation.y <= 1.575)
+						if (cubes[faceToRotate[0]].rotation.z >= 1.565 || cubes[faceToRotate[0]].rotation.z <= -1.565)
 						{
 							for (i = 0; i < 9; i++)
 							{
-								cubes[faceToRotate[i]].geometry.applyMatrix( new THREE.Matrix4().makeRotationZ(Math.PI/2));
+								cubes[faceToRotate[i]].geometry.applyMatrix( new THREE.Matrix4().makeRotationZ(direction * Math.PI/2));
 							}
 							animating = false;
 							reassignCubes();
@@ -255,9 +255,11 @@
 						if (currentMove > 0)
 						{
 							currentMove--;
+							console.log(currentMove);
 						}
 						else
 						{
+							document.getElementById("algorithmOutput").innerHTML = "At Algorithm Start";
 							animating = false;
 							return;
 						}
@@ -274,7 +276,7 @@
 						currentMove++;
 						console.log(currentMove);
 					}
-					else
+					else if (animationDir)
 					{
 						currentMove = -1;
 						animating = false;
@@ -321,17 +323,17 @@
 							break;
 							
 					}
-					if (currentMove < (currentAlgorithm.length -1))
+					if (currentMove < currentAlgorithm.length)
 					{
-						if(currentAlgorithm[currentMove] == "'")
+						if(currentAlgorithm[currentMove + 1] == "'")
 						{
 							direction = direction * -1;
-							currentMove += 2;
+							currentMove++;
 						}
-						else if (currentAlgorithm[currentMove == "w"])
+						else if (currentAlgorithm[currentMove+ 1] == "w")
 						{
 							//Specify it's a  wedge move here, once I've figured out how to do wedge moves
-							currentMove +=2;
+							currentMove++;
 						}
 					}
 				}
