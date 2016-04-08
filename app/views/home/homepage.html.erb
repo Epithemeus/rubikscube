@@ -129,12 +129,19 @@
 			var upFace = [0,1,2,9,10,11,18,19,20];
 			var downFace = [6,7,8,15,16,17,24,25,26];
 			
-			var frontRotatedCC = [2,5,8,1,4,7,0,3,6];
-			var backRotatedCC = [20,23,26,19,22,25,18,21,24];
-			var leftRotatedCC = [18,9,0,21,12,3,24,15,6];
+			var frontRotatedC = [6,3,0,7,4,1,8,5,2];
+			var backRotatedC = [20,23,26,19,22,25,18,21,24];
+			var leftRotatedC = [18,9,0,21,12,3,24,15,6]; 
+			var rightRotatedC = [8,17,26,5,14,23,2,11,20]; 
+			var upRotatedC = [2,11,20,1,10,19,0,9,18];
+			var downRotatedC = [24,15,6,25,16,7,26,17,8];
+			
+			var frontRotatedCC = [2,5,8,1,4,7,0,3,6]; 
+			var backRotatedCC = [24,21,18,25,22,19,26,23,20]; 
+			var leftRotatedCC = [6,15,24,3,12,21,0,9,18]; 
 			var rightRotatedCC = [20,11,2,23,14,5,26,17,8];
 			var upRotatedCC = [18,9,0,19,10,1,20,11,2];
-			var downRotatedCC = [24,15,6,25,16,7,26,17,8];
+			var downRotatedCC = [8,17,26,7,16,25,6,15,24]; 
 			
 			var faceToRotate = frontFace;
 			var rotatedFace = frontRotatedCC;
@@ -255,7 +262,7 @@
 						if (currentMove > 0)
 						{
 							currentMove--;
-							console.log(currentMove);
+							//console.log(currentMove);
 						}
 						else
 						{
@@ -274,7 +281,7 @@
 					if( currentMove < currentAlgorithm.length - 1 && animationDir)
 					{
 						currentMove++;
-						console.log(currentMove);
+						//console.log(currentMove);
 					}
 					else if (animationDir)
 					{
@@ -283,51 +290,76 @@
 						document.getElementById("algorithmOutput").innerHTML = "Algorithm Finished";
 						return;
 					}
-					
+					direction = 1;
 					switch (currentAlgorithm[currentMove])
 					{
 						case "R":
 							faceToRotate = rightFace;
 							axisToRotate = 0;
-							rotatedFace = rightRotatedCC;
+							rotatedFace = rightRotatedC;
+							direction *= -1;
 							break;
 						case "L":
 							faceToRotate = leftFace;
 							axisToRotate = 0;
-							rotatedFace = leftRotatedCC;
+							rotatedFace = leftRotatedC;
 							break;
 						case "U":
 							faceToRotate = upFace;
 							axisToRotate = 1;
-							rotatedFace = upRotatedCC;
+							rotatedFace = upRotatedC;
+							direction *= -1;
 							break;
 						case "D":
 							faceToRotate = downFace;
 							axisToRotate = 1;
-							rotatedFace = downRotatedCC;
+							rotatedFace = downRotatedC;
 							break;
 						case "F":
 							faceToRotate = frontFace;
 							axisToRotate = 2;
-							rotatedFace = frontRotatedCC;
+							rotatedFace = frontRotatedC;
+							direction *= -1;
 							break;
 						case "B":
 							faceToRotate = backFace;
 							axisToRotate = 2;
-							rotatedFace = backRotatedCC;
+							rotatedFace = backRotatedC;
 							break;
 						default:
 							document.getElementById("algorithmOutput").innerHTML = algorithmOutput[currentMove] + " is an invalid move.";
 							animating = false;
 							return;
-							break;
 							
 					}
+					var lastMove = "";
 					if (currentMove < currentAlgorithm.length)
 					{
 						if(currentAlgorithm[currentMove + 1] == "'")
 						{
 							direction = direction * -1;
+							lastMove = currentAlgorithm[currentMove];
+							switch(currentAlgorithm[currentMove])
+							{
+								case "R":
+									rotatedFace = rightRotatedCC;
+									break;
+								case "L":
+									rotatedFace = leftRotatedCC;
+									break;
+								case "F":
+									rotatedFace =frontRotatedCC;
+									break;
+								case "B":
+									rotatedFace = backRotatedCC;
+									break;
+								case "U":
+									rotatedFace = upRotatedCC;
+									break;
+								case "D":
+									rotatedFace = downRotatedCC;
+									break;
+							}
 							currentMove++;
 						}
 						else if (currentAlgorithm[currentMove+ 1] == "w")
@@ -335,9 +367,13 @@
 							//Specify it's a  wedge move here, once I've figured out how to do wedge moves
 							currentMove++;
 						}
+						else
+						{
+							lastMove = "";
+						}
 					}
 				}
-				document.getElementById("algorithmOutput").innerHTML = algorithmOutput[currentMove];
+				document.getElementById("algorithmOutput").innerHTML = lastMove + algorithmOutput[currentMove];
 			}	
 
 			render();
