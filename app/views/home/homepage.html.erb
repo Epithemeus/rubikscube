@@ -20,96 +20,107 @@
 			var geometrys = [];
 			var materials = [];
 			var cubes = [];
-			
-			for (i = 0; i < 27; i++)
-			{
-				//Make 27 cubes of size 0.95 units cubed
-				geometrys[i] = new THREE.BoxGeometry( 0.95, 0.95, 0.95 );
-				materials[i] = new THREE.MeshBasicMaterial( { color: 0xffffff, vertexColors: THREE.FaceColors } );
-				
-			}
-			
-			for (i = 0; i < 27; i++)
-			{
-				for (j =0; j < 12; j++)
-				{
-					//Make the rest of the cube grey, for some reason setting the color of the material to grey made nothing render, so I colored each face grey
-					geometrys[i].faces[j].color.setHex(0x777777);
-				}
-			}
-			
-			//Front Face
-			for (i = 0; i < 9; i++)
-			{
-				geometrys[i].translate(0,0,1);
-				geometrys[i].faces[8].color.setHex(0x00ff00);
-				geometrys[i].faces[9].color.setHex(0x00ff00);
-			}
-			
-			//Back Face
-			for (i = 18; i < 27; i++)
-			{
-				geometrys[i].translate(0,0,-1);
-				geometrys[i].faces[10].color.setHex(0x0000FF);
-				geometrys[i].faces[11].color.setHex(0x0000FF);
-			}
-			
-			//Left Face
-			for(i = 0; i < 27; i += 3)
-			{
-				geometrys[i].translate(-1,0,0);
-				geometrys[i].faces[2].color.setHex(0xFFA500);
-				geometrys[i].faces[3].color.setHex(0xFFA500);
-			}
-			
-			//Right Face
-			for(i = 2; i < 27; i+= 3)
-			{
-				geometrys[i].translate(1,0,0);
-				geometrys[i].faces[0].color.setHex(0xFF0000);
-				geometrys[i].faces[1].color.setHex(0xFF0000);
-			}
-			
-			//Up Face
-			for(i =0; i < 21; i++)
-			{
-				if ( i == 3) 
-				{
-					i = 9;
-				}
-				if ( i == 12)
-				{
-					i = 18;
-				}
-				geometrys[i].translate(0,1,0);
-				geometrys[i].faces[4].color.setHex(0xFFFFFF);
-				geometrys[i].faces[5].color.setHex(0xFFFFFF);
-			}
-			
-			//Down Face
-			for(i =6; i < 27; i++)
-			{
-				if ( i == 9) 
-				{
-					i = 15;
-				}
-				if ( i == 18)
-				{
-					i = 24;
-				}
-				geometrys[i].translate(0,-1,0);
-				geometrys[i].faces[6].color.setHex(0xFFFF00);
-				geometrys[i].faces[7].color.setHex(0xFFFF00);
-			}
-			
-			for (i = 0; i < 27; i++)
-			{
-				cubes[i] = new THREE.Mesh( geometrys[i], materials[i] );
-				scene.add( cubes[i] );
-			}
-			
 			var animating = false;
-			var g_notation = "a";
+			
+			var initScene = function()
+			{
+				scene = new THREE.Scene();
+				
+				for (i = 0; i < 27; i++)
+				{
+					//Make 27 cubes of size 0.95 units cubed
+					geometrys[i] = new THREE.BoxGeometry( 0.95, 0.95, 0.95 );
+					materials[i] = new THREE.MeshBasicMaterial( { color: 0xffffff, vertexColors: THREE.FaceColors } );
+					
+				}
+				
+				for (i = 0; i < 27; i++)
+				{
+					for (j =0; j < 12; j++)
+					{
+						//Make the rest of the cube grey, for some reason setting the color of the material to grey made nothing render, so I colored each face grey
+						geometrys[i].faces[j].color.setHex(0x777777);
+					}
+				}
+				
+				//Front Face
+				for (i = 0; i < 9; i++)
+				{
+					geometrys[i].translate(0,0,1);
+					geometrys[i].faces[8].color.setHex(0x00ff00);
+					geometrys[i].faces[9].color.setHex(0x00ff00);
+				}
+				
+				//Back Face
+				for (i = 18; i < 27; i++)
+				{
+					geometrys[i].translate(0,0,-1);
+					geometrys[i].faces[10].color.setHex(0x0000FF);
+					geometrys[i].faces[11].color.setHex(0x0000FF);
+				}
+				
+				//Left Face
+				for(i = 0; i < 27; i += 3)
+				{
+					geometrys[i].translate(-1,0,0);
+					geometrys[i].faces[2].color.setHex(0xFFA500);
+					geometrys[i].faces[3].color.setHex(0xFFA500);
+				}
+				
+				//Right Face
+				for(i = 2; i < 27; i+= 3)
+				{
+					geometrys[i].translate(1,0,0);
+					geometrys[i].faces[0].color.setHex(0xFF0000);
+					geometrys[i].faces[1].color.setHex(0xFF0000);
+				}
+				
+				//Up Face
+				for(i =0; i < 21; i++)
+				{
+					if ( i == 3) 
+					{
+						i = 9;
+					}
+					if ( i == 12)
+					{
+						i = 18;
+					}
+					geometrys[i].translate(0,1,0);
+					geometrys[i].faces[4].color.setHex(0xFFFFFF);
+					geometrys[i].faces[5].color.setHex(0xFFFFFF);
+				}
+				
+				//Down Face
+				for(i =6; i < 27; i++)
+				{
+					if ( i == 9) 
+					{
+						i = 15;
+					}
+					if ( i == 18)
+					{
+						i = 24;
+					}
+					geometrys[i].translate(0,-1,0);
+					geometrys[i].faces[6].color.setHex(0xFFFF00);
+					geometrys[i].faces[7].color.setHex(0xFFFF00);
+				}
+				
+				for (i = 0; i < 27; i++)
+				{
+					cubes[i] = new THREE.Mesh( geometrys[i], materials[i] );
+					scene.add( cubes[i] );
+				}
+				
+				camera.position.z = 4;
+				camera.position.y = 4;
+				camera.position.x = 4;
+				camera.lookAt(new THREE.Vector3(0,0,0));
+				
+				currentAlgorithm = "";
+				currentMove = 0;
+			}
 			
 			var frontFace = [0,1,2,3,4,5,6,7,8];
 			var backFace = [18,19,20,21,22,23,24,25,26];
@@ -128,13 +139,13 @@
 			var faceToRotate = frontFace;
 			var rotatedFace = frontRotatedCC;
 			var axisToRotate = 0;
-
-			camera.position.z = 5;
-			camera.position.y = 5;
-			camera.position.x = 5;
-			camera.lookAt(new THREE.Vector3(0,0,0));
-			scene.add(new THREE.AmbientLight(0xffffff)); //added scene lights but dont seem to be doing anything
-
+			var direction = 1;
+			var currentAlgorithm = "";
+			var currentMove = 0;
+			var animationDir = true;
+			
+			initScene();
+			
 			var render = function () 
 			{
 				requestAnimationFrame( render );
@@ -154,7 +165,7 @@
 						{
 							for (i = 0; i < 9; i++)
 							{
-								cubes[faceToRotate[i]].rotation.x = Math.PI/2;
+								cubes[faceToRotate[i]].geometry.applyMatrix( new THREE.Matrix4().makeRotationX(Math.PI/2));
 							}
 							animating = false;
 							reassignCubes();
@@ -171,7 +182,7 @@
 						{
 							for (i = 0; i < 9; i++)
 							{
-								cubes[faceToRotate[i]].rotation.y = Math.PI/2;
+								cubes[faceToRotate[i]].geometry.applyMatrix( new THREE.Matrix4().makeRotationY(Math.PI/2));
 							}
 							animating = false;
 							reassignCubes();
@@ -188,7 +199,7 @@
 						{
 							for (i = 0; i < 9; i++)
 							{
-								cubes[faceToRotate[i]].rotation.z = Math.PI/2;
+								cubes[faceToRotate[i]].geometry.applyMatrix( new THREE.Matrix4().makeRotationZ(Math.PI/2));
 							}
 							animating = false;
 							reassignCubes();
@@ -213,11 +224,23 @@
 				}
 				for (i = 0; i < 9; i++)
 				{
-					cubes[faceToRotate[i]].geometry.applyMatrix( cubes[faceToRotate[i]].matrix );
+					//cubes[faceToRotate[i]].geometry.applyMatrix( cubes[faceToRotate[i]].matrix );
 					cubes[faceToRotate[i]].rotation.set( 0, 0, 0 );
 					cubes[faceToRotate[i]].updateMatrix();
 					cubes[faceToRotate[i]] = cubesReferences[i];
 				}
+			}
+			
+			var forward = function()
+			{
+				animationDir = true;
+				animateStep();
+			}
+			
+			var backward = function()
+			{
+				animationDir = false;
+				animateStep();
 			}
 			
 			var animateStep = function()
@@ -226,54 +249,103 @@
 				{
 					animating = true;
 					var algorithmOutput = document.getElementById("algorithm").value;
-					switch (algorithmOutput)
+					
+					if(!animationDir)
+					{
+						if (currentMove > 0)
+						{
+							currentMove--;
+						}
+						else
+						{
+							animating = false;
+							return;
+						}
+					}
+					
+					if (algorithmOutput != currentAlgorithm)
+					{
+						currentAlgorithm = algorithmOutput;
+						currentMove = -1;
+					}
+					
+					if( currentMove < currentAlgorithm.length - 1 && animationDir)
+					{
+						currentMove++;
+						console.log(currentMove);
+					}
+					else
+					{
+						currentMove = -1;
+						animating = false;
+						document.getElementById("algorithmOutput").innerHTML = "Algorithm Finished";
+						return;
+					}
+					
+					switch (currentAlgorithm[currentMove])
 					{
 						case "R":
 							faceToRotate = rightFace;
 							axisToRotate = 0;
 							rotatedFace = rightRotatedCC;
-							g_notation = "r";
 							break;
 						case "L":
 							faceToRotate = leftFace;
 							axisToRotate = 0;
 							rotatedFace = leftRotatedCC;
-							g_notation = "l";
 							break;
 						case "U":
 							faceToRotate = upFace;
 							axisToRotate = 1;
 							rotatedFace = upRotatedCC;
-							g_notation = "u";
 							break;
 						case "D":
 							faceToRotate = downFace;
 							axisToRotate = 1;
 							rotatedFace = downRotatedCC;
-							g_notation = "d";
 							break;
 						case "F":
 							faceToRotate = frontFace;
 							axisToRotate = 2;
 							rotatedFace = frontRotatedCC;
-							g_notation = "f";
 							break;
 						case "B":
 							faceToRotate = backFace;
 							axisToRotate = 2;
 							rotatedFace = backRotatedCC;
-							g_notation = "b";
 							break;
+						default:
+							document.getElementById("algorithmOutput").innerHTML = algorithmOutput[currentMove] + " is an invalid move.";
+							animating = false;
+							return;
+							break;
+							
+					}
+					if (currentMove < (currentAlgorithm.length -1))
+					{
+						if(currentAlgorithm[currentMove] == "'")
+						{
+							direction = direction * -1;
+							currentMove += 2;
+						}
+						else if (currentAlgorithm[currentMove == "w"])
+						{
+							//Specify it's a  wedge move here, once I've figured out how to do wedge moves
+							currentMove +=2;
+						}
 					}
 				}
-				document.getElementById("algorithmOutput").innerHTML = algorithmOutput;
+				document.getElementById("algorithmOutput").innerHTML = algorithmOutput[currentMove];
 			}	
 
 			render();
 		</script>
 		<br></br>
 		<input type="text" id="algorithm">
-		<button onclick="animateStep()">Animate</button>
-		<p id="algorithmOutput"></p>
+		<button onclick="forward()" id= "Forward">Forward</button>
+		<button onclick="backward()" id= "Backward">Backward</button>
+		<br>
+		<div>Current Move: </div><div id="algorithmOutput"></div>
+		<button onclick="initScene()">Reset</button>
 	</body>
 </html>
