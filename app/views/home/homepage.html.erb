@@ -240,6 +240,7 @@
 			var currentAlgorithm = "";
 			var currentMove = 0;
 			var animationDir = true;
+			var doubleMove = false;
 			
 			initScene();
 			
@@ -257,15 +258,23 @@
 						{
 							cubes[faceToRotate[i]].rotation.x += direction * 0.01;
 						}
-						//Math.PI is too precise for direct comparison, so check a range around PI/2 or 90 degrees (1.570796)
+						//1.565 = ~PI/2
 						if (cubes[faceToRotate[0]].rotation.x >= 1.565 || cubes[faceToRotate[0]].rotation.x <= -1.565)
 						{
 							for (i = 0; i < 9; i++)
 							{
 								cubes[faceToRotate[i]].geometry.applyMatrix( new THREE.Matrix4().makeRotationX(direction * Math.PI/2));
 							}
-							animating = false;
 							reassignCubes();
+							
+							if (!doubleMove)
+							{
+								animating = false;
+							}
+							else
+							{
+								doubleMove = false;
+							}
 						}
 					}
 					else if(axisToRotate == 1)
@@ -274,15 +283,22 @@
 						{
 							cubes[faceToRotate[i]].rotation.y += direction * 0.01;
 						}
-						//Math.PI is too precise for direct comparison, so check a range around PI/2 or 90 degrees (1.570796)
 						if (cubes[faceToRotate[0]].rotation.y >= 1.565 || cubes[faceToRotate[0]].rotation.y <= -1.565)
 						{
 							for (i = 0; i < 9; i++)
 							{
 								cubes[faceToRotate[i]].geometry.applyMatrix( new THREE.Matrix4().makeRotationY(direction * Math.PI/2));
 							}
-							animating = false;
 							reassignCubes();
+							
+							if (!doubleMove)
+							{
+								animating = false;
+							}
+							else
+							{
+								doubleMove = false;
+							}
 						}
 					}
 					else if(axisToRotate == 2)
@@ -291,15 +307,22 @@
 						{
 							cubes[faceToRotate[i]].rotation.z += direction * 0.01;
 						}
-						//Math.PI is too precise for direct comparison, so check a range around PI/2 or 90 degrees (1.570796)
 						if (cubes[faceToRotate[0]].rotation.z >= 1.565 || cubes[faceToRotate[0]].rotation.z <= -1.565)
 						{
 							for (i = 0; i < 9; i++)
 							{
 								cubes[faceToRotate[i]].geometry.applyMatrix( new THREE.Matrix4().makeRotationZ(direction * Math.PI/2));
 							}
-							animating = false;
 							reassignCubes();
+							
+							if (!doubleMove)
+							{
+								animating = false;
+							}
+							else
+							{
+								doubleMove = false;
+							}
 						}
 					}
 					//If it hits here, something is wrong, so just stop animating!
@@ -346,152 +369,206 @@
 			{
 				if(!animating)
 				{
-					animating = true;
-					var algorithmOutput = document.getElementById("algorithm").value;
+					var algorithm = document.getElementById("algorithm").value;
 					
-					if(!animationDir)
+					if (algorithm != currentAlgorithm)
+					{
+						document.getElementById("algorithmOutput").innerHTML = algorithm;
+						currentAlgorithm = algorithm;
+						currentMove = 0;
+					}
+					
+					//Good for debugging
+					console.log(currentMove);
+					
+					//Reset doubleMove state
+					doubleMove = false;
+					
+					if (animationDir)
+					{
+						if( currentMove < currentAlgorithm.length)
+						{
+							if(currentMove < currentAlgorithm.length -1 && currentAlgorithm[currentMove + 1] == "'")
+							{
+								setupBackwardMove(currentAlgorithm);
+								currentMove += 2;
+							}
+							if(currentMove < currentAlgorithm.length - 1 && currentAlgorithm[currentMove + 1] == "2")
+							{
+								setupForwardMove(currentAlgorithm);
+								doubleMove = true;
+								currentMove += 2;
+							}
+							else
+							{
+								setupForwardMove(currentAlgorithm);
+								currentMove++;
+							}
+						}
+						//If we are at the end of the algorithm, start over (currentMove = -1) and display a message
+						else
+						{
+							document.getElementById("moveOutput").innerHTML = "Algorithm Finished";
+							return;
+						}
+					}
+					else
 					{
 						if (currentMove > 0)
 						{
-							currentMove--;
-							//console.log(currentMove);
-						}
-						else
-						{
-							document.getElementById("algorithmOutput").innerHTML = "At Algorithm Start";
-							animating = false;
-							return;
-						}
-					}
-					
-					if (algorithmOutput != currentAlgorithm)
-					{
-						currentAlgorithm = algorithmOutput;
-						currentMove = -1;
-					}
-					
-					if( currentMove < currentAlgorithm.length - 1 && animationDir)
-					{
-						currentMove++;
-						//console.log(currentMove);
-					}
-					else if (animationDir)
-					{
-						currentMove = -1;
-						animating = false;
-						document.getElementById("algorithmOutput").innerHTML = "Algorithm Finished";
-						return;
-					}
-					direction = 1;
-					switch (currentAlgorithm[currentMove])
-					{
-						case "R":
-							faceToRotate = rightFace;
-							axisToRotate = 0;
-							rotatedFace = rightRotatedC;
-							direction *= -1;
-							break;
-						case "L":
-							faceToRotate = leftFace;
-							axisToRotate = 0;
-							rotatedFace = leftRotatedC;
-							break;
-						case "U":
-							faceToRotate = upFace;
-							axisToRotate = 1;
-							rotatedFace = upRotatedC;
-							direction *= -1;
-							break;
-						case "D":
-							faceToRotate = downFace;
-							axisToRotate = 1;
-							rotatedFace = downRotatedC;
-							break;
-						case "F":
-							faceToRotate = frontFace;
-							axisToRotate = 2;
-							rotatedFace = frontRotatedC;
-							direction *= -1;
-							break;
-						case "B":
-							faceToRotate = backFace;
-							axisToRotate = 2;
-							rotatedFace = backRotatedC;
-							break;
-						case "M":
-							faceToRotate = mSlice;
-							axisToRotate = 0;
-							rotatedFace = mRotatedC;
-							break;
-						case "S":
-							direction *= -1;
-							faceToRotate = sSlice;
-							axisToRotate = 2;
-							rotatedFace = sRotatedC;
-							break;
-						case "E":
-							faceToRotate = eSlice;
-							axisToRotate = 1;
-							rotatedFace = eRotatedC;
-							break;
-						default:
-							document.getElementById("algorithmOutput").innerHTML = algorithmOutput[currentMove] + " is an invalid move.";
-							animating = false;
-							return;
-							
-					}
-					var lastMove = "";
-					if (currentMove < currentAlgorithm.length)
-					{
-						if(currentAlgorithm[currentMove + 1] == "'")
-						{
-							direction = direction * -1;
-							lastMove = currentAlgorithm[currentMove];
-							switch(currentAlgorithm[currentMove])
+							if(currentMove > 1 && currentAlgorithm[currentMove -1] == "'")
 							{
-								case "R":
-									rotatedFace = rightRotatedCC;
-									break;
-								case "L":
-									rotatedFace = leftRotatedCC;
-									break;
-								case "F":
-									rotatedFace =frontRotatedCC;
-									break;
-								case "B":
-									rotatedFace = backRotatedCC;
-									break;
-								case "U":
-									rotatedFace = upRotatedCC;
-									break;
-								case "D":
-									rotatedFace = downRotatedCC;
-									break;
-								case "M":
-									rotatedFace = mRotatedCC;
-									break;
-								case "S":
-									rotatedFace = sRotatedCC;
-									break;
-								case "E":
-									rotatedFace = eRotatedCC;
+								currentMove -= 2;
+								setupForwardMove(currentAlgorithm);
 							}
-							currentMove++;
-						}
-						else if (currentAlgorithm[currentMove+ 1] == "w")
-						{
-							//Specify it's a  wedge move here, once I've figured out how to do wedge moves
-							currentMove++;
+							else if(currentMove > 1 && currentAlgorithm[currentMove -1] == "2")
+							{
+								currentMove -= 2;
+								setupBackwardMove(currentAlgorithm);
+								console.log(currentMove);
+								doubleMove = true;
+							}
+							else
+							{
+								currentMove--;
+								setupBackwardMove(currentAlgorithm);
+							}
 						}
 						else
 						{
-							lastMove = "";
+							document.getElementById("moveOutput").innerHTML = "At Algorithm Start";
+							return;
 						}
 					}
 				}
-				document.getElementById("algorithmOutput").innerHTML = lastMove + algorithmOutput[currentMove];
+				animating = true;
 			}	
-
+			
+			var setupBackwardMove = function(algorithm)
+			{
+				
+				direction = -1;
+				switch (algorithm[currentMove])
+				{
+					case "R":
+						faceToRotate = rightFace;
+						axisToRotate = 0;
+						rotatedFace = rightRotatedCC;
+						direction *= -1;
+						break;
+					case "L":
+						faceToRotate = leftFace;
+						axisToRotate = 0;
+						rotatedFace = leftRotatedCC;
+						break;
+					case "U":
+						faceToRotate = upFace;
+						axisToRotate = 1;
+						rotatedFace = upRotatedCC;
+						direction *= -1;
+						break;
+					case "D":
+						faceToRotate = downFace;
+						axisToRotate = 1;
+						rotatedFace = downRotatedCC;
+						break;
+					case "F":
+						faceToRotate = frontFace;
+						axisToRotate = 2;
+						rotatedFace = frontRotatedCC;
+						direction *= -1;
+						break;
+					case "B":
+						faceToRotate = backFace;
+						axisToRotate = 2;
+						rotatedFace = backRotatedCC;
+						break;
+					case "M":
+						faceToRotate = mSlice;
+						axisToRotate = 0;
+						rotatedFace = mRotatedCC;
+						break;
+					case "S":
+						direction *= -1;
+						faceToRotate = sSlice;
+						axisToRotate = 2;
+						rotatedFace = sRotatedCC;
+						break;
+					case "E":
+						faceToRotate = eSlice;
+						axisToRotate = 1;
+						rotatedFace = eRotatedCC;
+						break;
+					default:
+						document.getElementById("moveOutput").innerHTML = algorithm[currentMove] + " is an invalid move.";
+						animating = false;
+						return;
+				}
+				document.getElementById("moveOutput").innerHTML = algorithm[currentMove];
+			}
+			
+			var setupForwardMove = function(algorithm)
+			{
+				direction = 1;
+				switch (algorithm[currentMove])
+				{
+					case "R":
+						faceToRotate = rightFace;
+						axisToRotate = 0;
+						rotatedFace = rightRotatedC;
+						direction *= -1;
+						break;
+					case "L":
+						faceToRotate = leftFace;
+						axisToRotate = 0;
+						rotatedFace = leftRotatedC;
+						break;
+					case "U":
+						faceToRotate = upFace;
+						axisToRotate = 1;
+						rotatedFace = upRotatedC;
+						direction *= -1;
+						break;
+					case "D":
+						faceToRotate = downFace;
+						axisToRotate = 1;
+						rotatedFace = downRotatedC;
+						break;
+					case "F":
+						faceToRotate = frontFace;
+						axisToRotate = 2;
+						rotatedFace = frontRotatedC;
+						direction *= -1;
+						break;
+					case "B":
+						faceToRotate = backFace;
+						axisToRotate = 2;
+						rotatedFace = backRotatedC;
+						break;
+					case "M":
+						faceToRotate = mSlice;
+						axisToRotate = 0;
+						rotatedFace = mRotatedC;
+						break;
+					case "S":
+						direction *= -1;
+						faceToRotate = sSlice;
+						axisToRotate = 2;
+						rotatedFace = sRotatedC;
+						break;
+					case "E":
+						faceToRotate = eSlice;
+						axisToRotate = 1;
+						rotatedFace = eRotatedC;
+						break;
+					default:
+						document.getElementById("moveOutput").innerHTML = moveOutput[currentMove] + " is an invalid move.";
+						animating = false;
+						return;
+				}
+				document.getElementById("moveOutput").innerHTML = algorithm[currentMove];
+			}
+			
 			render();
 		</script>
 		<div class="container">
@@ -499,7 +576,8 @@
 		<button onclick="forward()" id= "Forward">Forward</button>
 		<button onclick="backward()" id= "Backward">Backward</button>
 		<br>
-		<div>Current Move: </div><div id="algorithmOutput">No Algorithm</div>
+		<div>Current Algorithm</div><div id="algorithmOutput">No Algorithm</div>
+		<div>Current Move: </div><div id="moveOutput">No Algorithm</div>
 		<button onclick="initScene()">Reset Cube</button>
 		<button onclick="resetCamera()">Reset Camera</button>
 		
