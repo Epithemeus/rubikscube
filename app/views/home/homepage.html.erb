@@ -164,13 +164,14 @@
 				camera.position.z = 4;
 				camera.position.y = 4;
 				camera.position.x = 4;
-				camera.lookAt(new THREE.Vector3(0,0,0));
+				//camera.lookAt(new THREE.Vector3(0,0,0));
 				
 				currentAlgorithm = "";
 				currentMove = 0;
 				
 				// Add OrbitControls so that we can pan around with the mouse. <-- new
       			controls = new THREE.OrbitControls(camera, renderer.domElement);
+      			controls.noPan = true;
 			}
 			
 			var makeMaterials = function()
@@ -496,9 +497,7 @@
 		<button onclick="initScene()">Reset</button>
 		
 		
-		
-		
-		<div class="footer">Copyright 2016  || <a href="http://www.cs.sfu.ca/CourseCentral/365/li/">Course Webpage</a></div>
 		</div>
+		<div class="footer">Copyright 2016  || <a href="http://www.cs.sfu.ca/CourseCentral/365/li/">Course Webpage</a></div>
 	</body>
 </html>
