@@ -47,7 +47,7 @@ div.upperleft {
 }
 
 div.header {
-	width: 520px;
+	width: 920px;
 	height: 204px;
 	margin-left: auto;
 	margin-right: auto;
@@ -84,7 +84,7 @@ div.container {
 	border-radius: 10px;
 	position:relative; /* needed for footer positioning*/
 	margin:0 auto; /* center, not in IE5 */
-   	width:100%; 
+   	width:920px; 
 	
 	height:auto !important; /* real browsers */
 	height:100%; /* IE6: treaded as min-height*/
