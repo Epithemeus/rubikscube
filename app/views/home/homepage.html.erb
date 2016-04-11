@@ -398,10 +398,23 @@
 						{
 							currentMoveIndex++;
 						}
+						
+						if (currentMoveIndex < currentAlgorithm.length)
+						{
+							document.getElementById("moveOutput").innerHTML = currentAlgorithm[currentMoveIndex];
+						}
+						else
+						{
+							document.getElementById("moveOutput").innerHTML = "Algorithm Finished";
+						}
+						if (currentMoveIndex < currentAlgorithm.length -1 && (currentAlgorithm[currentMoveIndex + 1] == "'" || currentAlgorithm[currentMoveIndex + 1] == "2"))
+						{
+							document.getElementById("moveOutput").innerHTML += currentAlgorithm[currentMoveIndex + 1];
+						}
 					}
 					else
 					{
-						document.getElementById("moveOutput").innerHTML = "Algorithm Finished";
+						//document.getElementById("moveOutput").innerHTML = "Algorithm Finished";
 						return;
 					}
 					animating = true;
@@ -435,7 +448,6 @@
 							currentMoveIndex--;
 						}
 						
-						
 						if(currentAlgorithm[currentMoveIndex] == "X" || currentAlgorithm[currentMoveIndex] == "Y" || currentAlgorithm[currentMoveIndex] == "Z")
 						{
 							//do the cube rotations here
@@ -450,6 +462,12 @@
 						if (currentAlgorithm[currentMoveIndex].toLowerCase() == currentAlgorithm[currentMoveIndex])
 						{
 							moveSet[1] = setupWedgeMove(currentAlgorithm[currentMoveIndex].toUpperCase(), direction);
+						}
+						
+						document.getElementById("moveOutput").innerHTML = currentAlgorithm[currentMoveIndex];
+						if (currentMoveIndex < currentAlgorithm.length -1 && (currentAlgorithm[currentMoveIndex + 1] == "'" || currentAlgorithm[currentMoveIndex + 1] == "2"))
+						{
+							document.getElementById("moveOutput").innerHTML += currentAlgorithm[currentMoveIndex + 1];
 						}
 					}
 					else
@@ -670,7 +688,7 @@
 		<button onclick="backward()" id= "Backward">Backward</button>
 		<br>
 		<div>Current Algorithm</div><div id="algorithmOutput">No Algorithm</div>
-		<div>Current Move: </div><div id="moveOutput">No Algorithm</div>
+		<div>Next move to perform: </div><div id="moveOutput">No Algorithm</div>
 		<button onclick="initScene()">Reset Cube</button>
 		<button onclick="resetCamera()">Reset Camera</button>
 		
