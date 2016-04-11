@@ -5,7 +5,7 @@ html,body {
 	padding:0;
 	font-family: Trebuchet MS, Verdana, Arial, sans-serif;
 	font-size: 10pt;
-	text-align:center;
+	text-align:left;
 	height:100%;
 	
 }
@@ -47,11 +47,11 @@ div.upperleft {
 }
 
 div.header {
-	width: 50%;
-	height: 204px;
+	width: 75%;
+	height: 205px;
 	margin-left: auto;
 	margin-right: auto;
-	background-image: url(Rubikcube.jpg);
+	background-image: url(RubiksCube960x367.jpg);
 	margin-bottom: 20px;
 }
 
@@ -80,17 +80,54 @@ div.nav {
 	border-top:3px solid #FFFFFF;
 }
 
+canvas {
+	padding: 0;
+	clear: none;
+	
+}
+
 div.container {
 	border-radius: 10px;
 	position:relative; /* needed for footer positioning*/
 	margin:0 auto; /* center, not in IE5 */
-   	width:50%; 
+   	width:75%; 
 	
 	height:auto !important; /* real browsers */
 	height:100%; /* IE6: treaded as min-height*/
 	text-align:center;
 	min-height:100%; /* real browsers */
 }
+
+div.instructions {
+  float: left;
+  width: 23%;
+  
+  margin-left:12.5%;
+  padding: 0;
+}
+
+div.right{
+	float: right;
+	width: 12.5%;
+	margin-right: 12.5%;
+	padding: 0;
+	text-align: center;
+	
+	
+}
+
+div.buttons {
+	
+	position: relative;
+	float: right;
+	width: 12.5%;
+	margin-right: 12.5%;
+	padding: 0;
+	text-align: center;
+	
+	
+}
+
 
 div.footer {
 	
