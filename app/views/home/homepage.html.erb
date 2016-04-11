@@ -278,7 +278,10 @@
 				}
 				renderer.render(scene, camera);
 				//orbit control update on render
-				controls.update();
+				if (controls)
+				{
+					controls.update();
+				}
 			};
 			
 			var executeMove = function(moveToExecute)
@@ -688,7 +691,7 @@
 			render();
 		</script>
 				<div class="instructions">
-			<img src="app/assets/images/instructionsvert.png" alt="Instructions on use vertical" style="width:75%;height:75%">
+			<img src="assets/instructionsvert.png" alt="Instructions on use vertical" style="width:75%;height:75%">
 			
 		</div>
 		
