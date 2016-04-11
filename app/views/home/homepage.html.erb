@@ -364,7 +364,6 @@
 						document.getElementById("algorithmOutput").innerHTML = "No algorithm entered";
 						return;
 					}
-					var wedgeMove = false;
 					
 					if (currentMoveIndex < currentAlgorithm.length)
 					{
@@ -386,7 +385,6 @@
 						if (currentAlgorithm[currentMoveIndex].toLowerCase() == currentAlgorithm[currentMoveIndex])
 						{
 							moveSet[1] = setupWedgeMove(currentAlgorithm[currentMoveIndex].toUpperCase(), direction);
-							wedgeMove = true;
 						}
 						
 						
@@ -412,8 +410,56 @@
 			
 			var backward = function()
 			{
-				animationDir = false;
-				animateStep();
+				if(!animating)
+				{
+					moveSet = [];
+					var direction = -1;
+					if (!currentAlgorithm)
+					{
+						document.getElementById("algorithmOutput").innerHTML = "No algorithm entered";
+						return;
+					}
+					currentMoveIndex--;
+					
+					if (currentMoveIndex >= 0)
+					{
+						if(currentAlgorithm[currentMoveIndex] == "'")
+						{
+							direction = 1;
+							currentMoveIndex--;
+						}
+						
+						if(currentAlgorithm[currentMoveIndex] == "2")
+						{
+							doubleMove = true;
+							currentMoveIndex--;
+						}
+						
+						
+						if(currentAlgorithm[currentMoveIndex] == "X" || currentAlgorithm[currentMoveIndex] == "Y" || currentAlgorithm[currentMoveIndex] == "Z")
+						{
+							//do the cube rotations here
+						}
+						moveSet[0] = setupMove(currentAlgorithm[currentMoveIndex].toUpperCase(), direction);
+						if (moveSet[0] == null)
+						{
+							document.getElementById("moveOutput").innerHTML = currentAlgorithm[currentMoveIndex] + " is not a valid move";
+							return;
+						}
+						
+						if (currentAlgorithm[currentMoveIndex].toLowerCase() == currentAlgorithm[currentMoveIndex])
+						{
+							moveSet[1] = setupWedgeMove(currentAlgorithm[currentMoveIndex].toUpperCase(), direction);
+						}
+					}
+					else
+					{
+						currentMoveIndex = 0;
+						document.getElementById("moveOutput").innerHTML = "At Algorithm Start";
+						return;
+					}
+					animating = true;
+				}
 			}
 			
 			var enterAlgorithm = function()
@@ -424,11 +470,6 @@
 				currentAlgorithm = algorithm;
 				currentMoveIndex = 0;
 			}
-			
-			var animateStep = function()
-			{
-				
-			}	
 			
 			//Condition, direction must be 1 or -1
 			//Returns an appropriately setup move for the given notation and direction
