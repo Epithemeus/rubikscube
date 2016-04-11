@@ -269,7 +269,6 @@
 					}
 					if (finished && !(doubleMove))
 					{
-						console.log(!(doubleMove))
 						animating = false;
 					}
 					else if (finished)
@@ -365,6 +364,8 @@
 						return;
 					}
 					
+					var cubeRotation = false;
+					
 					if (currentMoveIndex < currentAlgorithm.length)
 					{
 						if(currentMoveIndex < currentAlgorithm.length - 1 && currentAlgorithm[currentMoveIndex + 1] == "'")
@@ -373,18 +374,22 @@
 						}
 						if(currentAlgorithm[currentMoveIndex] == "X" || currentAlgorithm[currentMoveIndex] == "Y" || currentAlgorithm[currentMoveIndex] == "Z")
 						{
-							//do the cube rotations here
+							moveSet = setupCubeRotation(currentAlgorithm[currentMoveIndex], direction);
+							cubeRotation = true;
 						}
-						moveSet[0] = setupMove(currentAlgorithm[currentMoveIndex].toUpperCase(), direction);
-						if (moveSet[0] == null)
+						if (!cubeRotation)
 						{
-							document.getElementById("moveOutput").innerHTML = currentAlgorithm[currentMoveIndex] + " is not a valid move";
-							return;
-						}
+							moveSet[0] = setupMove(currentAlgorithm[currentMoveIndex].toUpperCase(), direction);
+							if (moveSet[0] == null)
+							{
+								document.getElementById("moveOutput").innerHTML = currentAlgorithm[currentMoveIndex] + " is not a valid move";
+								return;
+							}
 						
-						if (currentAlgorithm[currentMoveIndex].toLowerCase() == currentAlgorithm[currentMoveIndex])
-						{
-							moveSet[1] = setupWedgeMove(currentAlgorithm[currentMoveIndex].toUpperCase(), direction);
+							if (currentAlgorithm[currentMoveIndex].toLowerCase() == currentAlgorithm[currentMoveIndex])
+							{
+								moveSet[1] = setupWedgeMove(currentAlgorithm[currentMoveIndex].toUpperCase(), direction);
+							}
 						}
 						
 						
@@ -484,7 +489,11 @@
 			{
 				var algorithm = document.getElementById("algorithm").value;
 				document.getElementById("algorithmOutput").innerHTML = algorithm;
-				document.getElementById("moveOutput").innerHTML = "At Algorithm Start";
+				document.getElementById("moveOutput").innerHTML = algorithm[0];
+				if (algorithm.length > 1 && algorithm[1] == "'" || algorithm[1] == "2")
+				{
+					document.getElementById("moveOutput").innerHTML += algorithm[1];	
+				}
 				currentAlgorithm = algorithm;
 				currentMoveIndex = 0;
 			}
@@ -500,6 +509,21 @@
 				else if(direction == -1)
 				{
 					return setupBackwardMove(moveNotation);
+				}
+			}
+			
+			var setupCubeRotation = function(moveNotation, direction)
+			{
+				switch(moveNotation)
+				{
+					case "X":
+						return [setupMove("L", direction * -1), setupMove("M", direction *-1), setupMove("R", direction)];
+					case "Y":
+						return [setupMove("U", direction), setupMove("E", direction * -1), setupMove("D", direction * -1)];
+					case "Z":
+						return [setupMove("F", direction), setupMove("S", direction), setupMove("B", direction * -1)];
+					default:
+						return null;
 				}
 			}
 			
