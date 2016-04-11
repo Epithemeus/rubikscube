@@ -383,6 +383,7 @@
 							if (moveSet[0] == null)
 							{
 								document.getElementById("moveOutput").innerHTML = currentAlgorithm[currentMoveIndex] + " is not a valid move";
+								currentMoveIndex++;
 								return;
 							}
 						
@@ -439,6 +440,8 @@
 					}
 					currentMoveIndex--;
 					
+					var cubeRotation = false;
+					
 					if (currentMoveIndex >= 0)
 					{
 						if(currentAlgorithm[currentMoveIndex] == "'")
@@ -455,18 +458,23 @@
 						
 						if(currentAlgorithm[currentMoveIndex] == "X" || currentAlgorithm[currentMoveIndex] == "Y" || currentAlgorithm[currentMoveIndex] == "Z")
 						{
-							//do the cube rotations here
+							moveSet = setupCubeRotation(currentAlgorithm[currentMoveIndex], direction);
+							cubeRotation = true;
 						}
-						moveSet[0] = setupMove(currentAlgorithm[currentMoveIndex].toUpperCase(), direction);
-						if (moveSet[0] == null)
+						if(cubeRotation)
 						{
-							document.getElementById("moveOutput").innerHTML = currentAlgorithm[currentMoveIndex] + " is not a valid move";
-							return;
-						}
+							moveSet[0] = setupMove(currentAlgorithm[currentMoveIndex].toUpperCase(), direction);
+							if (moveSet[0] == null)
+							{
+								document.getElementById("moveOutput").innerHTML = currentAlgorithm[currentMoveIndex] + " is not a valid move";
+								currentMoveIndex--;
+								return;
+							}
 						
-						if (currentAlgorithm[currentMoveIndex].toLowerCase() == currentAlgorithm[currentMoveIndex])
-						{
-							moveSet[1] = setupWedgeMove(currentAlgorithm[currentMoveIndex].toUpperCase(), direction);
+							if (currentAlgorithm[currentMoveIndex].toLowerCase() == currentAlgorithm[currentMoveIndex])
+							{
+								moveSet[1] = setupWedgeMove(currentAlgorithm[currentMoveIndex].toUpperCase(), direction);
+							}
 						}
 						
 						document.getElementById("moveOutput").innerHTML = currentAlgorithm[currentMoveIndex];
