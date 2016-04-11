@@ -461,7 +461,7 @@
 							moveSet = setupCubeRotation(currentAlgorithm[currentMoveIndex], direction);
 							cubeRotation = true;
 						}
-						if(cubeRotation)
+						if(!cubeRotation)
 						{
 							moveSet[0] = setupMove(currentAlgorithm[currentMoveIndex].toUpperCase(), direction);
 							if (moveSet[0] == null)
