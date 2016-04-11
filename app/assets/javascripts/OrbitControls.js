@@ -1038,13 +1038,5 @@ try {
 }
 catch (error)
 {
-	//If it's not a type error, rethrow it. Otherwise just return and wait for the textures to all load
-	if (!(error instanceof ReferenceError))
-	{
-		throw error;
-	}
-	else
-	{
 	
-	}
 }
