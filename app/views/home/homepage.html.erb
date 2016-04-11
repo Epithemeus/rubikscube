@@ -56,10 +56,10 @@
 			
 			var moveSet = [];
 			var currentAlgorithm = "";
-			var currentMove = 0;
+			var currentMoveIndex = 0;
 			var animationDir = true;
-			var executingMove = 0;
-
+			var doubleMove = false;
+			
 			var renderer = new THREE.WebGLRenderer();
 			renderer.setClearColor( 0xffffff);
 			renderer.setSize( window.innerWidth/2, window.innerHeight/2 );
@@ -216,7 +216,7 @@
       			controls = new THREE.OrbitControls(camera, renderer.domElement);
 				
 				currentAlgorithm = "";
-				currentMove = 0;
+				currentMoveIndex = 0;
 				
 			}
 			
@@ -255,20 +255,26 @@
 			var render = function () 
 			{
 				requestAnimationFrame( render );
-
+				var finished = false;
 				if (animating)
 				{
-					if(moveSet[executingMove] != null)
+					var executingMove = 0;
+					while(moveSet[executingMove] != null)
 					{
 						if(executeMove(moveSet[executingMove]))
 						{
-							executingMove++;
+							finished = true;	
 						}
+						executingMove++;
 					}
-					else
+					if (finished && !(doubleMove))
 					{
+						console.log(!(doubleMove))
 						animating = false;
-						executingMove = 0;
+					}
+					else if (finished)
+					{
+						doubleMove = false;
 					}
 				}
 				renderer.render(scene, camera);
@@ -349,8 +355,59 @@
 			
 			var forward = function()
 			{
-				animationDir = true;
-				animateStep();
+				if(!animating)
+				{
+					moveSet = [];
+					var direction = 1;
+					if (!currentAlgorithm)
+					{
+						document.getElementById("algorithmOutput").innerHTML = "No algorithm entered";
+						return;
+					}
+					var wedgeMove = false;
+					
+					if (currentMoveIndex < currentAlgorithm.length)
+					{
+						if(currentMoveIndex < currentAlgorithm.length - 1 && currentAlgorithm[currentMoveIndex + 1] == "'")
+						{
+							direction = -1;
+						}
+						if(currentAlgorithm[currentMoveIndex] == "X" || currentAlgorithm[currentMoveIndex] == "Y" || currentAlgorithm[currentMoveIndex] == "Z")
+						{
+							//do the cube rotations here
+						}
+						moveSet[0] = setupMove(currentAlgorithm[currentMoveIndex].toUpperCase(), direction);
+						if (moveSet[0] == null)
+						{
+							document.getElementById("moveOutput").innerHTML = currentAlgorithm[currentMoveIndex] + " is not a valid move";
+							return;
+						}
+						
+						if (currentAlgorithm[currentMoveIndex].toLowerCase() == currentAlgorithm[currentMoveIndex])
+						{
+							moveSet[1] = setupWedgeMove(currentAlgorithm[currentMoveIndex].toUpperCase(), direction);
+							wedgeMove = true;
+						}
+						
+						
+						if(currentMoveIndex < currentAlgorithm.length - 1 && currentAlgorithm[currentMoveIndex + 1] == "2")
+						{
+							doubleMove = true;
+						}
+						
+						currentMoveIndex++;
+						if (currentMoveIndex < currentAlgorithm.length && (currentAlgorithm[currentMoveIndex] == "'" || currentAlgorithm[currentMoveIndex] == "2"))
+						{
+							currentMoveIndex++;
+						}
+					}
+					else
+					{
+						document.getElementById("moveOutput").innerHTML = "Algorithm Finished";
+						return;
+					}
+					animating = true;
+				}
 			}
 			
 			var backward = function()
@@ -365,84 +422,12 @@
 				document.getElementById("algorithmOutput").innerHTML = algorithm;
 				document.getElementById("moveOutput").innerHTML = "At Algorithm Start";
 				currentAlgorithm = algorithm;
-				currentMove = 0;
+				currentMoveIndex = 0;
 			}
 			
 			var animateStep = function()
 			{
-				if(!animating)
-				{
-					if (!currentAlgorithm)
-					{
-						document.getElementById("algorithmOutput").innerHTML = "No algorithm entered";
-						return;
-					}
-					
-					//Wipe all previous moves
-					moveSet = [];
-					
-					if (animationDir)
-					{
-						if( currentMove < currentAlgorithm.length)
-						{
-							if(currentMove < currentAlgorithm.length -1 && currentAlgorithm[currentMove + 1] == "'")
-							{
-								moveSet[0] = setupMove(currentAlgorithm[currentMove], -1);
-								//document.getElementById("moveOutput").innerHTML += "'";
-								currentMove += 2;
-							}
-							else if(currentMove < currentAlgorithm.length - 1 && currentAlgorithm[currentMove + 1] == "2")
-							{
-								moveSet[0] = setupMove(currentAlgorithm[currentMove], 1);
-								//Do the same move again
-								moveSet[1] = moveSet[0];
-								//document.getElementById("moveOutput").innerHTML += "2";
-								currentMove += 2;
-							}
-							else
-							{
-								moveSet[0] = setupMove(currentAlgorithm[currentMove], 1);
-								currentMove++;
-							}
-						}
-						else
-						{
-							document.getElementById("moveOutput").innerHTML = "Algorithm Finished";
-							return;
-						}
-					}
-					else
-					{
-						if (currentMove > 0)
-						{
-							if(currentMove > 1 && currentAlgorithm[currentMove -1] == "'")
-							{
-								currentMove -= 2;
-								moveSet[0] = setupMove(currentAlgorithm[currentMove], 1);
-								//document.getElementById("moveOutput").innerHTML += "'";
-							}
-							else if(currentMove > 1 && currentAlgorithm[currentMove -1] == "2")
-							{
-								currentMove -= 2;
-								moveSet[0] = setupMove(currentAlgorithm[currentMove], -1);
-								moveSet[1] = moveSet[0];
-								//document.getElementById("moveOutput").innerHTML += "2";
-								//console.log(currentMove);
-							}
-							else
-							{
-								currentMove--;
-								moveSet[0] = setupMove(currentAlgorithm[currentMove], -1);
-							}
-						}
-						else
-						{
-							document.getElementById("moveOutput").innerHTML = "At Algorithm Start";
-							return;
-						}
-					}
-				}
-				animating = true;
+				
 			}	
 			
 			//Condition, direction must be 1 or -1
@@ -458,6 +443,47 @@
 					return setupBackwardMove(moveNotation);
 				}
 			}
+			
+			var setupWedgeMove = function(moveNotation, direction)
+			{
+				var functionDirection;
+				if (direction == 1)
+				{
+					functionDirection = setupForwardMove;
+				}
+				else if (direction == -1)
+				{
+					functionDirection = setupBackwardMove;
+				}
+				switch (moveNotation)
+				{
+					case "L":
+						return functionDirection("M");
+					case "F":
+						return functionDirection("S");
+					case "D":
+						return functionDirection("E");
+				}
+				//These directions are reversed from the others
+				if (direction == 1)
+				{
+					functionDirection = setupBackwardMove;
+				}
+				else if (direction == -1)
+				{
+					functionDirection = setupForwardMove;
+				}
+				switch (moveNotation)
+				{
+					case "R":
+						return functionDirection("M");
+					case "B":
+						return functionDirection("S");
+					case "U":
+						return functionDirection("E");
+				}
+			}
+			
 			
 			var setupBackwardMove = function(moveNotation)
 			{
