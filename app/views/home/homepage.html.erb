@@ -505,41 +505,22 @@
 			
 			var setupWedgeMove = function(moveNotation, direction)
 			{
-				var functionDirection;
-				if (direction == 1)
-				{
-					functionDirection = setupForwardMove;
-				}
-				else if (direction == -1)
-				{
-					functionDirection = setupBackwardMove;
-				}
-				switch (moveNotation)
+				switch(moveNotation)
 				{
 					case "L":
-						return functionDirection("M");
-					case "F":
-						return functionDirection("S");
-					case "D":
-						return functionDirection("E");
-				}
-				//These directions are reversed from the others
-				if (direction == 1)
-				{
-					functionDirection = setupBackwardMove;
-				}
-				else if (direction == -1)
-				{
-					functionDirection = setupForwardMove;
-				}
-				switch (moveNotation)
-				{
+						return setupMove("M", direction);
 					case "R":
-						return functionDirection("M");
-					case "B":
-						return functionDirection("S");
+						return setupMove("M", direction * -1);
+					case "D":
+						return setupMove("E", direction);
 					case "U":
-						return functionDirection("E");
+						return setupMove("E", direction * -1);
+					case "B":
+						return setupMove("S", direction * -1);
+					case "F":
+						return setupMove("S", direction);
+					default:
+						return null;
 				}
 			}
 			
@@ -688,7 +669,7 @@
 		<button onclick="backward()" id= "Backward">Backward</button>
 		<br>
 		<div>Current Algorithm</div><div id="algorithmOutput">No Algorithm</div>
-		<div>Next move to perform: </div><div id="moveOutput">No Algorithm</div>
+		<div>Next move: </div><div id="moveOutput">No Algorithm</div>
 		<button onclick="initScene()">Reset Cube</button>
 		<button onclick="resetCamera()">Reset Camera</button>
 		
